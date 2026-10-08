@@ -149,6 +149,13 @@ ol.recs b{font-weight:600}
 .grid2 > .panel{align-content:start}
 .wide-pair{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr)}
 @media (max-width:980px){.wide-pair{grid-template-columns:1fr}}
+table.credit td:not(:first-child),table.credit th:not(:first-child){text-align:right}
+table.credit td{font-size:.95rem}
+.th-sub{font-family:var(--f-body);text-transform:none;letter-spacing:0;font-size:.72rem;color:var(--ink-3)}
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.terms > div{display:grid;gap:6px;align-content:start;border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--bg)}
+.terms p{font-size:.88rem;color:var(--ink-2)}
+.terms .pill{justify-self:start}
 .why{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:18px}
 .why > div{display:grid;gap:4px;align-content:start;border-top:1px solid var(--line);padding-top:10px}
 .why-n{font-family:var(--f-display);font-stretch:80%;font-weight:800;font-size:1.6rem;line-height:1.05;font-variant-numeric:tabular-nums}
@@ -483,6 +490,22 @@ td.bold{font-weight:600}
       <p class="note">The list of deducted employees goes from Cash Payroll and the other business units to MMFI Accounts Receivable and SML.</p>
     </section>
   </div>
+
+  <section class="panel" id="credit">
+    <div class="panel-head"><div><span class="eyebrow">Credit limit per employee</span><h2>Credit limits and deduction terms</h2><p>Orders under regular salary deduction stay within the employee's credit limit, based on position and business unit.</p></div></div>
+    <div class="tbl"><table class="credit">
+      <thead><tr><th>Position</th><th>MMFI<br><span class="th-sub">SML Memo #5, s. 2024</span></th><th>Other business units<br><span class="th-sub">Based on last regular salary deduct</span></th></tr></thead>
+      <tbody>
+        <tr><td>Rank and file</td><td>₱2,000.00</td><td>₱500.00</td></tr>
+        <tr><td>Supervisor</td><td>₱4,000.00</td><td>₱1,250.00</td></tr>
+        <tr><td>Manager</td><td>₱6,000.00</td><td>₱3,000.00</td></tr>
+      </tbody>
+    </table></div>
+    <div class="terms">
+      <div><span class="pill on">One-time deduction</span><p>Each purchase is deducted in full in a single payroll deduction.</p></div>
+      <div><span class="pill on">Adjustable</span><p>Other business units may increase their credit limit.</p></div>
+    </div>
+  </section>
 
   <section class="panel">
     <div class="panel-head"><div><span class="eyebrow">Document flow</span><h2>What to submit, when, and to whom</h2></div></div>
