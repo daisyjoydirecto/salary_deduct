@@ -1,0 +1,717 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Employee Food Support Program Impact</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: summary band → program-vs-regular monthly chart → mix & price → long-run context → findings → ledger table */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --ink:#14171c; --ink-2:#4c535e; --ink-3:#7a818c;
+  --line:#e2e5ea; --grid:#eceef2;
+  --efsp:#4a3aa7; --efsp-soft:#e7e4f7; --reg:#a9b0bb;
+  --pork:#2a78d6; --beef:#eb6834; --chicken:#1baf7a;
+  --good:#1f7a3a; --warn:#a35f00; --bad:#b4302f;
+  --y25:#eda100; --y26:#14171c; --hr:#4a3aa7; --sales:#eb6834; --mcp:#1baf7a; --sml:#eda100; --acct:#2a78d6;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111317; --surface:#1a1d22; --ink:#f2f3f5; --ink-2:#b9bec7; --ink-3:#8a909a;
+  --line:#2c3038; --grid:#252930; --efsp:#9085e9; --efsp-soft:#2a2645; --reg:#5d6470;
+  --pork:#3987e5; --beef:#d95926; --chicken:#199e70; --good:#5cc27a; --warn:#e0a03a; --bad:#ef7372; --y25:#c98500; --hr:#9085e9; --sales:#d95926; --mcp:#199e70; --sml:#c98500; --acct:#3987e5; --y26:#f2f3f5; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111317; --surface:#1a1d22; --ink:#f2f3f5; --ink-2:#b9bec7; --ink-3:#8a909a;
+  --line:#2c3038; --grid:#252930; --efsp:#9085e9; --efsp-soft:#2a2645; --reg:#5d6470;
+  --pork:#3987e5; --beef:#d95926; --chicken:#199e70; --good:#5cc27a; --warn:#e0a03a; --bad:#ef7372; --y25:#c98500; --hr:#9085e9; --sales:#d95926; --mcp:#199e70; --sml:#c98500; --acct:#3987e5; --y26:#f2f3f5; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.wrap{--gutter:clamp(16px,4vw,40px);max-width:1180px;margin:0 auto;padding-inline:var(--gutter);padding-block:32px 64px;display:grid;gap:28px}
+h1,h2,h3{font-family:var(--f-display);font-stretch:85%;text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:clamp(1.9rem,4.6vw,3rem);font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.35rem;font-weight:700}
+h3{font-size:1rem;font-weight:700}
+p{margin:0;max-width:68ch}
+.eyebrow{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.num{font-variant-numeric:tabular-nums}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;padding-inline:clamp(16px,4vw,40px);padding-block:10px;
+  background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.tb-in{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 20px}
+.tb-title{display:grid;gap:1px;min-width:0}
+.tb-title .eyebrow{font-size:.62rem}
+.topbar h1{font-size:clamp(1rem,2.2vw,1.25rem);font-weight:800;letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar .jump{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;max-width:100%;gap:6px}
+.topbar .jump::-webkit-scrollbar{display:none}
+.topbar .jump a{font-size:.74rem;padding:4px 10px;white-space:nowrap}
+.intro{display:grid;gap:8px;padding-bottom:18px;border-bottom:2px solid var(--ink)}
+.intro .lede{color:var(--ink-2);font-size:1rem}
+[id]{scroll-margin-top:96px}
+@media (max-width:640px){.topbar h1{font-size:1rem}[id]{scroll-margin-top:110px}}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--f-mono);font-size:.78rem;color:var(--ink-3)}
+/* KPI band */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.kpi{background:var(--surface);padding:18px 20px;display:grid;gap:4px;align-content:start}
+.kpi .v{font-family:var(--f-display);font-stretch:80%;font-weight:800;font-size:2rem;line-height:1;font-variant-numeric:tabular-nums}
+.kpi .v.efsp{color:var(--efsp)}
+.kpi .s{color:var(--ink-2);font-size:.85rem}
+/* panels */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px clamp(16px,2.5vw,26px);display:grid;gap:14px;min-width:0}
+.panel-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 20px;align-items:end}
+.panel-head > div:not(.seg){display:grid;gap:4px;min-width:0}
+.panel-head p{color:var(--ink-2);font-size:.9rem}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:28px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.82rem;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{fill:var(--ink-3);font-family:var(--f-mono);font-size:11px}
+.chart .lbl{fill:var(--ink-2);font-weight:500}
+.chart .gl{stroke:var(--grid);stroke-width:1}
+.chart .ax{stroke:var(--line);stroke-width:1}
+.tip{position:absolute;pointer-events:none;background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:0 6px 20px rgba(0,0,0,.14);border-radius:8px;padding:10px 12px;font-size:.8rem;min-width:180px;z-index:5;transform:translate(-50%,calc(-100% - 12px));line-height:1.45}
+.tip-note{font-size:.72rem;color:var(--ink-3);margin:2px 0 6px}
+.tip-t{font-size:.76rem;width:100%;border-collapse:collapse}
+.tip-t th,.tip-t td{padding:2px 0 2px 10px;border:0;white-space:nowrap;text-align:right}
+.tip-t th:first-child,.tip-t td:first-child{padding-left:0;text-align:left;display:flex;align-items:center;gap:6px;color:var(--ink-2)}
+.tip-t th{font-family:var(--f-mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:500;background:none}
+.tip-t tr.tt td{border-top:1px solid var(--line);font-weight:600;padding-top:4px}
+.tip b{font-family:var(--f-display);font-size:.95rem}
+.tip .row{display:flex;justify-content:space-between;gap:14px;font-variant-numeric:tabular-nums}
+.tip .row i{font-style:normal;display:inline-flex;align-items:center;gap:6px;color:var(--ink-2)}
+/* toggle */
+.seg{display:inline-flex;flex-direction:row;flex-shrink:0;white-space:nowrap;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{font:inherit;font-size:.8rem;background:transparent;color:var(--ink-2);border:0;padding:6px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg button:focus-visible{outline:2px solid var(--efsp);outline-offset:-2px}
+/* mix bars */
+.mix{display:grid;gap:14px}
+.mix-row{display:grid;grid-template-columns:76px 1fr auto;gap:12px;align-items:center}
+.mix-row .name{font-weight:600;font-size:.9rem}
+.track{height:14px;background:var(--grid);border-radius:4px;overflow:hidden}
+.fill{height:100%;border-radius:0 4px 4px 0}
+.mix-row .val{font-family:var(--f-mono);font-size:.82rem;text-align:right;color:var(--ink-2);font-variant-numeric:tabular-nums}
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:.85rem;font-variant-numeric:tabular-nums}
+th,td{padding:8px 12px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+thead th{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:500;background:var(--bg)}
+tbody tr:last-child td{border-bottom:0}
+tr.total td{font-weight:600;background:var(--bg)}
+td.e{color:var(--efsp);font-weight:600}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:.7rem;padding:2px 8px;border-radius:99px;border:1px solid currentColor}
+.pill.on{color:var(--efsp);background:var(--efsp-soft)}
+.pill.off{color:var(--ink-3)}
+.up{color:var(--good)} .down{color:var(--bad)}
+/* findings */
+.findings{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
+.fcols{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;gap:24px}
+@media (max-width:860px){.fcols{grid-template-columns:1fr}}
+.fcol{display:grid;gap:18px;align-content:start;min-width:0}
+.fcol-h{display:flex;justify-content:space-between;align-items:center;font-family:var(--f-display);font-stretch:85%;font-weight:700;font-size:1.05rem;padding-bottom:8px;border-bottom:2px solid currentColor}
+.fcol.neu .fcol-h{color:var(--warn)}.fcol.neg .fcol-h{color:var(--bad)}.fcol.pos .fcol-h{color:var(--good)}
+.fcol-h .cnt{font-family:var(--f-mono);font-size:.75rem;font-weight:500;border:1px solid currentColor;border-radius:99px;padding:1px 8px}
+.fcol .finding{border-top:1px solid var(--line)}
+.fcol .fcol-h + .finding{border-top:0;padding-top:0}
+.finding{border-top:3px solid var(--ink);padding-top:12px;display:grid;gap:6px;align-content:start}
+.finding.pos{border-color:var(--good)} .finding.neg{border-color:var(--bad)} .finding.neu{border-color:var(--warn)}
+.finding .tag{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase}
+.finding.pos .tag{color:var(--good)} .finding.neg .tag{color:var(--bad)} .finding.neu .tag{color:var(--warn)}
+.finding p{color:var(--ink-2);font-size:.9rem}
+ol.recs{margin:0;padding-left:1.3em;display:grid;gap:10px;max-width:80ch}
+ol.recs li{padding-left:4px}
+ol.recs b{font-weight:600}
+.note{font-size:.8rem;color:var(--ink-3)}
+.yrs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.yr{display:grid;gap:2px;padding:10px 0;border-top:1px solid var(--line)}
+.yr .y{font-family:var(--f-mono);font-size:.75rem;color:var(--ink-3)}
+.yr .a{font-family:var(--f-display);font-stretch:80%;font-weight:700;font-size:1.35rem;font-variant-numeric:tabular-nums}
+.yr .k{font-size:.8rem;color:var(--ink-2)}
+.line-legend{justify-content:center}
+.ln{position:relative;width:22px;height:2px;background:var(--c);display:inline-block}
+.ln::after{content:"";position:absolute;left:50%;top:50%;width:8px;height:8px;border-radius:50%;background:var(--c);border:2px solid var(--surface);transform:translate(-50%,-50%)}
+.gantt-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+.gantt{position:relative;display:grid;grid-template-columns:minmax(220px,1.6fr) repeat(13,minmax(40px,1fr));min-width:780px;row-gap:0}
+.gantt > div{border-bottom:1px solid var(--line)}
+.g-head{font-family:var(--f-mono);font-size:.68rem;color:var(--ink-3);padding:8px 0;text-align:center;background:var(--bg);text-transform:uppercase;letter-spacing:.05em}
+.g-head.g-lbl{text-align:left;padding-left:12px}
+.g-head.rel{color:var(--sales)}
+.g-lbl{grid-column:1;padding:9px 12px;display:grid;gap:1px;font-size:.82rem;line-height:1.3}
+.g-lbl span{color:var(--ink-3);font-size:.74rem}
+.g-reg{background:var(--bg)}
+.g-bar{align-self:center;margin:0 3px;height:24px;border-radius:4px;color:#fff;font-family:var(--f-mono);font-size:.7rem;display:flex;align-items:center;justify-content:center;border-bottom:0!important;position:relative;z-index:1;white-space:nowrap}
+.g-bar.hr{background:var(--hr)}.g-bar.sales{background:var(--sales)}.g-bar.reg{background:var(--reg);color:var(--ink)}
+.g-bar.doc{background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.28) 0 4px,transparent 4px 8px)}
+.g-row{border-bottom:1px solid var(--line);pointer-events:none}
+.gantt > .g-lbl,.gantt > .g-bar{border-bottom:0}
+.g-rel-zone{background:color-mix(in srgb,var(--sales) 9%,transparent);border-bottom:0!important;pointer-events:none}
+.grid2 > .panel{align-content:start}
+.wide-pair{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr)}
+@media (max-width:980px){.wide-pair{grid-template-columns:1fr}}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:18px}
+.why > div{display:grid;gap:4px;align-content:start;border-top:1px solid var(--line);padding-top:10px}
+.why-n{font-family:var(--f-display);font-stretch:80%;font-weight:800;font-size:1.6rem;line-height:1.05;font-variant-numeric:tabular-nums}
+.why p{font-size:.88rem;color:var(--ink-2)}
+.owners .dot,.dot{width:10px;height:10px;border-radius:50%;background:var(--c);display:inline-block}
+.flow{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr) minmax(0,1.3fr);gap:18px;align-items:start}
+@media (max-width:900px){.flow{grid-template-columns:1fr}}
+.phase{display:grid;gap:10px;min-width:0}
+.phase-h{display:flex;justify-content:space-between;align-items:center;gap:8px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);padding-bottom:6px;border-bottom:1px solid var(--line)}
+.tag-same{color:var(--good);border:1px solid currentColor;border-radius:99px;padding:1px 8px;font-size:.66rem}
+.steps{margin:0;padding:0;list-style:none;display:grid;gap:8px;counter-reset:st calc(var(--s,1) - 1)}
+.steps li{position:relative;display:grid;gap:3px;padding:10px 12px 10px 44px;border:1px solid var(--line);border-left:3px solid var(--c);border-radius:6px;background:var(--surface);font-size:.86rem;line-height:1.4}
+.steps li::before{counter-increment:st;content:counter(st);position:absolute;left:12px;top:10px;width:22px;height:22px;border-radius:50%;background:var(--c);color:#fff;font-family:var(--f-mono);font-size:.72rem;display:grid;place-items:center}
+.steps li b{font-weight:600}
+.who{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.branch{font-size:.8rem;color:var(--warn)}
+.branch.ok{color:var(--good)}
+.callout{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:12px 14px;font-size:.9rem;color:var(--ink-2)}
+.callout b{color:var(--ink)}
+table.week td,table.week th{text-align:center}
+table.week td:first-child,table.week th:first-child{text-align:left}
+table.week td.on{color:var(--acct);font-size:1rem}
+table.docs td,table.cmp td{white-space:normal;text-align:left;vertical-align:top;min-width:140px}
+table.docs th,table.cmp th{text-align:left}
+td.good{color:var(--good);font-weight:600}
+.jump{display:flex;flex-wrap:wrap;gap:8px}
+.jump a{font-size:.8rem;color:var(--ink-2);text-decoration:none;border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:5px 12px}
+.jump a:hover,.jump a:focus-visible{border-color:var(--ink);color:var(--ink);outline:none}
+.sec-title{display:grid;gap:4px;padding-top:8px}
+.sec-title h2{font-size:1.7rem}
+.sec-title p{color:var(--ink-2)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.vs > div{background:var(--surface);padding:16px 18px;display:grid;gap:4px;align-content:start}
+.vs .v{font-family:var(--f-display);font-stretch:80%;font-weight:800;font-size:1.7rem;line-height:1.05;font-variant-numeric:tabular-nums}
+.vs .reg-h .v{color:var(--ink)} .vs .efsp-h .v{color:var(--efsp)}
+.vs .s{font-size:.82rem;color:var(--ink-2)}
+.chan{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.stack100{display:grid;gap:10px}
+.s100-row{display:grid;grid-template-columns:86px 1fr;gap:12px;align-items:center}
+.s100-row .name{font-size:.85rem;font-weight:600}
+.s100{display:flex;gap:2px;height:26px}
+.s100 > span{display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:.7rem;color:#fff;min-width:0;overflow:hidden;white-space:nowrap}
+.s100 > span:first-child{border-radius:4px 0 0 4px}.s100 > span:last-child{border-radius:0 4px 4px 0}
+.pair{display:grid;gap:14px}
+.pair-row{display:grid;gap:5px}
+.pair-row .top{display:flex;justify-content:space-between;gap:10px;font-size:.85rem}
+.pair-row .top b{font-weight:600}
+.pair-row .top span{font-family:var(--f-mono);font-size:.78rem;color:var(--ink-2)}
+.bar2{display:grid;gap:3px}
+.bar2 > div{height:10px;border-radius:0 4px 4px 0}
+td.bold{font-weight:600}
+@media (max-width:520px){.mix-row{grid-template-columns:64px 1fr;}.mix-row .val{grid-column:1/-1;text-align:left}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="topbar"><div class="tb-in">
+    <div class="tb-title">
+      <span class="eyebrow">Sales Meat and Livestock · Salary Deduction</span>
+      <h1>Employee Food Support Program: Overall Impact</h1>
+    </div>
+    <nav class="jump" aria-label="Sections">
+      <a href="#years">All years</a><a href="#yoy">2025 vs 2026</a><a href="#versus">Regular vs EFSP</a><a href="#process">Order process</a><a href="#monthly">2026 monthly</a><a href="#ledger-sec">Ledger</a><a href="#findings">Findings</a><a href="#proposal">Proposal</a>
+    </nav>
+</div></header>
+<div class="wrap">
+  <div class="intro">
+    <p class="lede">Salary-deduct meat sales for every year from 2023 to 2026, how 2026 compares with 2025, and how the Employee Food Support Program (EFSP) compares with regular salary deduction.</p>
+    <div class="meta"><span>Coverage: May 2023 – Sep 2026</span><span>EFSP period: Apr – Sep 2026</span><span>Amounts in PHP · quantities in kg</span></div>
+  </div>
+
+
+  <div class="sec-title" id="years"><span class="eyebrow">Overview · 2023 to 2026</span><h2>All years</h2><p>Salary-deduct sales for every year on record. 2023 covers Sep–Dec only and 2026 covers Jan–Sep only.</p></div>
+
+  <section class="panel">
+    <div class="panel-head"><div><span class="eyebrow">Annual totals by commodity</span><h2>Year by year</h2><p>Sales grew sixteen-fold from 2023 to 2024 and 70% more in 2025, the peak year. 2026 so far is 72% below 2025.</p></div>
+      <div class="seg" role="group" aria-label="Year chart measure">
+        <button type="button" id="ya-amt" aria-pressed="true">Amount (₱)</button>
+        <button type="button" id="ya-kg" aria-pressed="false">Quantity (kg)</button>
+      </div>
+    </div>
+    <div class="panel-head" style="align-items:center">
+      <div class="legend" id="years-legend"></div>
+      <div class="seg" role="group" aria-label="Split bars by">
+        <button type="button" id="ys-ch" aria-pressed="true">EFSP vs regular</button>
+        <button type="button" id="ys-co" aria-pressed="false">By commodity</button>
+      </div>
+    </div>
+    <div class="chart" id="c-years"></div>
+    <div class="yrs" id="yrs"></div>
+    <div class="tbl"><table>
+      <thead><tr><th>Year</th><th>Selling months</th><th>Pork ₱</th><th>Beef ₱</th><th>Chicken ₱</th><th>Total ₱</th><th>Regular ₱</th><th>EFSP ₱</th><th>Total kg</th><th>Avg ₱ / month</th><th>Avg ₱ / kg</th><th>Change vs prior year</th></tr></thead>
+      <tbody id="year-t"></tbody>
+    </table></div>
+    <p class="note">Change compares full-year totals. Because 2026 has only nine months, the pace row projects a full year (nine-month average × 12). The like-for-like Jan–Sep comparison is in the 2025 vs 2026 section below.</p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div><span class="eyebrow">Long-run context</span><h2>Monthly salary-deduct sales, May 2023 – Sep 2026</h2>
+      <p>Pork drove the 2024–2025 build-up. Chicken entered in January 2026. The shaded months are the EFSP period (Apr–Sep 2026). Hover or tap the chart to see each month.</p></div>
+      <div class="seg" role="group" aria-label="Long-run measure">
+        <button type="button" id="l-amt" aria-pressed="true">Amount (₱)</button>
+        <button type="button" id="l-kg" aria-pressed="false">Quantity (kg)</button>
+      </div>
+    </div>
+    <div class="chart" id="c-long"></div>
+    <div class="legend line-legend"><span><i class="ln" style="--c:var(--pork)"></i>Pork</span><span><i class="ln" style="--c:var(--beef)"></i>Beef</span><span><i class="ln" style="--c:var(--chicken)"></i>Chicken</span><span><i class="sw" style="background:var(--efsp-soft);outline:1px solid var(--efsp)"></i>EFSP period (Apr–Sep 2026)</span></div>
+  </section>
+
+  <div class="sec-title" id="yoy"><span class="eyebrow">Prior year vs current year</span><h2>2025 vs 2026</h2><p>Every 2026 month is below the same month of 2025. The smallest gaps were in January and February, before EFSP started. The gap widened from June onward.</p></div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div><span class="eyebrow">Month by month</span><h2>2025 and 2026 side by side</h2><p>Oct–Dec 2026 are not yet reported.</p></div>
+      <div class="seg" role="group" aria-label="Year comparison measure">
+        <button type="button" id="yy-amt" aria-pressed="true">Amount (₱)</button>
+        <button type="button" id="yy-kg" aria-pressed="false">Quantity (kg)</button>
+      </div>
+    </div>
+    <div class="legend"><span><i class="sw" style="background:var(--y25)"></i>2025 · regular salary deduct</span><span><i class="sw" style="background:var(--y26)"></i>2026 · regular salary deduct</span><span><i class="sw" style="background:var(--efsp)"></i>2026 · EFSP</span><span><i class="sw" style="background:var(--efsp-soft);outline:1px solid var(--efsp)"></i>EFSP period</span></div>
+    <div class="chart" id="c-yoy"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><div><span class="eyebrow">Same period, by commodity</span><h2>Jan–Sep 2026 vs Jan–Sep 2025</h2><p>Pork carries the decline. Beef almost tripled and chicken is new in 2026, but together they cover only a small part of the lost pork sales.</p></div></div>
+    <div class="tbl"><table>
+      <thead><tr><th>Commodity</th><th>2025 kg</th><th>2026 kg</th><th>2025 ₱</th><th>2026 ₱</th><th>Change ₱</th></tr></thead>
+      <tbody id="yoy-t"></tbody>
+    </table></div>
+  </section>
+
+  <div class="sec-title" id="versus"><span class="eyebrow">Channel comparison · Jan–Sep 2026</span><h2>Regular salary deduction vs EFSP</h2><p>The two ways employees bought meat through salary deduction in 2026.</p></div>
+
+  <section class="vs" aria-label="Regular vs EFSP totals" id="vs-head"></section>
+
+  <div class="grid2">
+    <section class="panel">
+      <div class="panel-head"><div><span class="eyebrow">Commodity mix</span><h2>What each channel sold</h2><p>Share of sales value. EFSP leans more toward beef; regular deduction carries more chicken.</p></div></div>
+      <div class="stack100" id="s100"></div>
+      <div class="legend"><span><i class="sw" style="background:var(--pork)"></i>Pork</span><span><i class="sw" style="background:var(--beef)"></i>Beef</span><span><i class="sw" style="background:var(--chicken)"></i>Chicken</span></div>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><div><span class="eyebrow">Sales value by commodity</span><h2>Regular vs EFSP, ₱</h2><p>Jan–Sep 2026 totals.</p></div></div>
+      <div class="pair" id="pair"></div>
+      <div class="legend"><span><i class="sw" style="background:var(--reg)"></i>Regular</span><span><i class="sw" style="background:var(--efsp)"></i>EFSP</span></div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head"><div><span class="eyebrow">Head to head</span><h2>Channel scorecard</h2><p>Program-period rows cover Apr–Sep 2026, when both channels were open.</p></div></div>
+    <div class="tbl"><table>
+      <thead><tr><th>Measure</th><th>Regular salary deduct</th><th>EFSP</th><th>Difference</th></tr></thead>
+      <tbody id="vs-t"></tbody>
+    </table></div>
+  </section>
+
+  <div class="sec-title" id="process"><span class="eyebrow">Order-to-release lead time</span><h2>Order process: EFSP vs regular</h2><p>How long an employee waits from placing an order to receiving it under each channel.</p></div>
+
+  <section class="vs" aria-label="Lead time comparison">
+    <div class="reg-h"><span class="chan"><i class="sw" style="background:var(--reg)"></i>Regular salary deduct</span><span class="v">Same day</span><span class="s">Employee goes to MMFI at any time, orders and takes the order home in one visit.</span><span class="s">1 step · no hand-offs · no document cycle</span></div>
+    <div class="efsp-h"><span class="chan"><i class="sw" style="background:var(--efsp)"></i>Employee Food Support Program</span><span class="v">Up to 13 days</span><span class="s">10 days of processing before any order is released, then a 3-day releasing period.</span><span class="s">7 steps · 5 hand-offs between HR and MMFI Sales · 3 days of document work</span></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><div><span class="eyebrow">EFSP cycle, day by day</span><h2>From order gathering to release</h2><p>Each bar is one step. Days 8–10 are spent on the Authority to Deduct and Dispatch form, after the orders are already prepared.</p></div></div>
+    <div class="legend"><span><i class="sw" style="background:var(--hr)"></i>HR</span><span><i class="sw" style="background:var(--sales)"></i>MMFI Sales</span><span><i class="sw" style="background:var(--reg)"></i>Regular salary deduct</span></div>
+    <div class="gantt-wrap">
+      <div class="gantt" role="table" aria-label="EFSP order cycle by day">
+        <div class="g-lbl g-head" role="columnheader">Step</div>
+        <div class="g-day g-head">D1</div><div class="g-day g-head">D2</div><div class="g-day g-head">D3</div><div class="g-day g-head">D4</div><div class="g-day g-head">D5</div><div class="g-day g-head">D6</div><div class="g-day g-head">D7</div><div class="g-day g-head">D8</div><div class="g-day g-head">D9</div><div class="g-day g-head">D10</div><div class="g-day g-head rel">D11</div><div class="g-day g-head rel">D12</div><div class="g-day g-head rel">D13</div>
+
+        <div class="g-lbl" style="grid-row:2"><b>Order gathering</b><span>HR collects employee orders</span></div>
+        <div class="g-bar hr" style="grid-row:2;grid-column:2/5">3 days</div>
+        <div class="g-lbl" style="grid-row:3"><b>Consolidation and submission</b><span>HR to MMFI Sales</span></div>
+        <div class="g-bar hr" style="grid-row:3;grid-column:5/6">1</div>
+        <div class="g-lbl" style="grid-row:4"><b>Order preparation</b><span>MMFI Sales</span></div>
+        <div class="g-bar sales" style="grid-row:4;grid-column:6/9">3 days</div>
+        <div class="g-lbl" style="grid-row:5"><b>Print and forward Authority to Deduct and Dispatch form</b><span>HR</span></div>
+        <div class="g-bar hr doc" style="grid-row:5;grid-column:9/10">1</div>
+        <div class="g-lbl" style="grid-row:6"><b>Completeness check of documents</b><span>MMFI Sales</span></div>
+        <div class="g-bar sales doc" style="grid-row:6;grid-column:10/11">1</div>
+        <div class="g-lbl" style="grid-row:7"><b>Lacking documents or corrections</b><span>HR</span></div>
+        <div class="g-bar hr doc" style="grid-row:7;grid-column:11/12">1</div>
+        <div class="g-lbl" style="grid-row:8"><b>Releasing period</b><span>MMFI Sales to employees</span></div>
+        <div class="g-bar sales rel" style="grid-row:8;grid-column:12/15">3 days</div>
+        <div class="g-lbl g-reg" style="grid-row:9"><b>Regular salary deduct</b><span>Walk-in order and release</span></div>
+        <div class="g-bar reg" style="grid-row:9;grid-column:2/3">Same day</div>
+        <div class="g-row" style="grid-row:2;grid-column:1/-1" aria-hidden="true"></div><div class="g-row" style="grid-row:3;grid-column:1/-1" aria-hidden="true"></div><div class="g-row" style="grid-row:4;grid-column:1/-1" aria-hidden="true"></div><div class="g-row" style="grid-row:5;grid-column:1/-1" aria-hidden="true"></div><div class="g-row" style="grid-row:6;grid-column:1/-1" aria-hidden="true"></div><div class="g-row" style="grid-row:7;grid-column:1/-1" aria-hidden="true"></div><div class="g-row" style="grid-row:8;grid-column:1/-1" aria-hidden="true"></div><div class="g-row" style="grid-row:9;grid-column:1/-1" aria-hidden="true"></div>
+        <div class="g-rel-zone" style="grid-row:2/10;grid-column:12/15" aria-hidden="true"></div>
+      </div>
+    </div>
+    <p class="note">Striped bars are document steps (Authority to Deduct and Dispatch form). Day counts follow the EFSP process steps provided for this report. The shaded columns are the releasing period.</p>
+  </section>
+
+  <section class="panel" id="monthly">
+    <div class="panel-head">
+      <div><span class="eyebrow">2026 monthly</span><h2>EFSP vs regular salary deduction</h2>
+      <p>The program period ran April to September. EFSP carried most of the volume in April and May, recorded no purchases in June–July, and picked up slightly in August–September. Regular salary deduction ran in every month; MMFI reopened it for MMFI employees only because EFSP orders were minimal.</p></div>
+      <div class="seg" role="group" aria-label="Measure">
+        <button type="button" id="m-amt" aria-pressed="true">Amount (₱)</button>
+        <button type="button" id="m-kg" aria-pressed="false">Quantity (kg)</button>
+      </div>
+    </div>
+    <div class="legend"><span><i class="sw" style="background:var(--efsp)"></i>EFSP</span><span><i class="sw" style="background:var(--reg)"></i>Regular salary deduction</span></div>
+    <div class="chart" id="c-month"></div>
+  </section>
+
+  <div class="grid2">
+    <section class="panel">
+      <div class="panel-head"><div><span class="eyebrow">What employees bought</span><h2>EFSP commodity mix</h2><p>Share of program sales value, Apr–Sep 2026.</p></div></div>
+      <div class="mix" id="mix"></div>
+      <div class="tbl"><table>
+        <thead><tr><th>Commodity</th><th>EFSP kg</th><th>EFSP ₱</th><th>Share of 2026 ₱</th></tr></thead>
+        <tbody id="mix-t"></tbody>
+      </table></div>
+    </section>
+  </div>
+
+  <section class="panel" id="ledger-sec">
+    <div class="panel-head"><div><span class="eyebrow">Ledger</span><h2>2026 monthly breakdown</h2></div></div>
+    <div class="tbl"><table>
+      <thead><tr><th>Month</th><th>Status</th><th>Total ₱</th><th>EFSP ₱</th><th>Regular ₱</th><th>EFSP share</th><th>Total kg</th><th>EFSP kg</th></tr></thead>
+      <tbody id="ledger"></tbody>
+    </table></div>
+    <p class="note">Source: salary_deduct.xlsx, Sheet1. October–December 2026 not yet reported.</p>
+  </section>
+
+  <section class="panel" id="findings">
+    <div class="panel-head"><div><span class="eyebrow">Analysis</span><h2>Key findings</h2></div></div>
+    <div class="findings fcols">
+      <div class="fcol neu"><div class="fcol-h"><span>Context &amp; watch</span><span class="cnt">3</span></div>
+        <div class="finding neu"><span class="tag">Context</span><h3>2025 was the peak year</h3>
+        <p>Salary-deduct sales rose from ₱279K (Sep–Dec 2023) to ₱4.44M in 2024 and ₱7.57M in 2025, almost all pork. At the current pace, 2026 will close near ₱2.81M, about 63% below 2025.</p></div>
+        <div class="finding neu"><span class="tag">Watch</span><h3>April–May mixed EFSP and regular salary deduct</h3>
+        <p>EFSP was <b id="f1"></b> of April sales and 69.3% of May sales. Regular salary deduction ran alongside it because MMFI reopened it for MMFI employees only, due to minimal EFSP orders. Across Apr–Sep, EFSP totaled <b id="f2"></b> and 2,443 kg.</p></div>
+        <div class="finding neu"><span class="tag">Watch</span><h3>EFSP moved orders rather than adding them</h3>
+        <p>Total salary-deduct sales averaged ₱288K a month in April–May, 6% below the Jan–Mar average of ₱305K. Over the same months regular deduction fell from ₱305K to ₱75K a month, so most EFSP orders replaced purchases that would otherwise have gone through regular deduction.</p></div>
+      </div>
+      <div class="fcol neg"><div class="fcol-h"><span>Concerns</span><span class="cnt">4</span></div>
+        <div class="finding neg"><span class="tag">Concern</span><h3>EFSP did not narrow the gap to 2025</h3>
+        <p>The smallest gaps to 2025 were in January (−54%) and February (−51%), before EFSP started. Jan–Mar combined was 58% below 2025. April–May, with EFSP, was 60% below. From June to September the gap widened to 69–77%.</p></div>
+        <div class="finding neg"><span class="tag">Concern</span><h3>EFSP orders fell sharply after May</h3>
+        <p>No EFSP purchases were recorded in June and July. August and September were about ₱21–22K each, roughly a tenth of April–May. Beef has had no EFSP sales since May. Total sales in June–July averaged ₱156K a month, 49% below Jan–Mar.</p></div>
+        <div class="finding neg"><span class="tag">Concern</span><h3>Overall salary-deduct sales are down sharply</h3>
+        <p>Jan–Sep 2026 totals ₱2.10M, 65% below the same period of 2025 (₱5.95M). Pork value is down 76%. Neither channel has reversed this decline.</p></div>
+        <div class="finding neg"><span class="tag">Concern</span><h3>Up to 13 days to receive an EFSP order</h3>
+        <p>EFSP needs 10 days of gathering, consolidation, preparation and document checks before release, then a 3-day releasing period. Regular salary deduct is a walk-in: employees order at MMFI and take the order home the same day. The longer wait is a likely reason employees moved back to regular deduction once it reopened.</p></div>
+      </div>
+      <div class="fcol pos"><div class="fcol-h"><span>Positive</span><span class="cnt">1</span></div>
+        <div class="finding pos"><span class="tag">Positive</span><h3>Higher beef share in EFSP</h3>
+        <p>Beef was 20% of EFSP sales value, compared with 10% of regular salary deduct in 2026.</p></div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <div class="sec-title" id="proposal"><span class="eyebrow">Recommendation</span><h2>Resume regular salary deduction for all business units</h2><p>Reopen walk-in regular salary deduction at the MMF Meat Cutting Plant (MCP) for every business unit, using a set weekly schedule, an eligibility check at the counter and fixed payroll cut-offs.</p></div>
+
+  <section class="panel">
+    <div class="panel-head"><div><span class="eyebrow">Why resume</span><h2>What the data and the process show</h2></div></div>
+    <div class="why">
+      <div><span class="why-n">₱305K</span><p>Average monthly sales in Jan–Mar 2026, when only regular salary deduction ran. This was the highest level of 2026.</p></div>
+      <div><span class="why-n">Same day</span><p>Regular deduction releases the order on the same visit. EFSP takes up to 13 days from order gathering to the end of the releasing period.</p></div>
+      <div><span class="why-n">Minimal</span><p>EFSP orders were low enough that MMFI already reopened regular deduction for MMFI employees. No EFSP purchases were recorded in June–July.</p></div>
+      <div><span class="why-n">−51% to −54%</span><p>January and February had the smallest gaps to 2025, both before EFSP started.</p></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><div><span class="eyebrow">Proposed process</span><h2>Regular salary deduction, step by step</h2><p>Steps 2–6 happen while the employee is at the counter, and the order goes home the same day. Steps 7–11 are back-office steps that record and bill the sale.</p></div></div>
+    <div class="legend owners">
+      <span><i class="dot" style="--c:var(--hr)"></i>HR</span><span><i class="dot" style="--c:var(--sales)"></i>Sales staff</span><span><i class="dot" style="--c:var(--mcp)"></i>MCP personnel</span><span><i class="dot" style="--c:var(--sml)"></i>SML approver</span><span><i class="dot" style="--c:var(--acct)"></i>Accounting</span>
+    </div>
+    <div class="flow">
+      <div class="phase"><div class="phase-h"><span>Before the cut-off</span></div>
+        <ol class="steps" style="--s:1">
+          <li style="--c:var(--hr)"><span class="who">HR</span><b>Send the updated employee list per cut-off.</b></li>
+        </ol>
+      </div>
+      <div class="phase"><div class="phase-h"><span>At the counter</span><span class="tag-same">Same visit</span></div>
+        <ol class="steps" style="--s:2">
+          <li style="--c:var(--sales)"><span class="who">Sales staff</span><b>Verify that the employee is eligible for meat cuts salary deduction.</b>
+            <span class="branch">Not eligible → tell the employee they may buy the items in cash.</span></li>
+          <li style="--c:var(--sales)"><span class="who">Sales staff</span><b>Receive the order and forward it to MCP personnel.</b>
+            <span class="branch">Item not available → tell the employee so they can change or cancel the order.</span></li>
+          <li style="--c:var(--sales)"><span class="who">Sales staff</span><b>Give the employee the Authority to Deduct (ATD) form to fill in and sign.</b></li>
+          <li style="--c:var(--mcp)"><span class="who">MCP personnel</span><b>Prepare the order, the delivery receipt (DR) and the dispatch form.</b></li>
+          <li style="--c:var(--mcp)"><span class="who">MCP personnel</span><b>Release the order together with the signed DR.</b><span class="branch ok">Employee leaves with the order.</span></li>
+        </ol>
+      </div>
+      <div class="phase"><div class="phase-h"><span>Back office</span></div>
+        <ol class="steps" style="--s:7">
+          <li style="--c:var(--sales)"><span class="who">Sales staff</span><b>Create the sales order (SO) in the system.</b></li>
+          <li style="--c:var(--sml)"><span class="who">SML approver</span><b>Approve the system SO.</b></li>
+          <li style="--c:var(--sales)"><span class="who">Sales staff</span><b>Forward the approved SO to MCP.</b></li>
+          <li style="--c:var(--mcp)"><span class="who">MCP personnel</span><b>Fulfill the SO.</b></li>
+          <li style="--c:var(--acct)"><span class="who">Accounting</span><b>Bill the SO.</b></li>
+        </ol>
+      </div>
+    </div>
+    <div class="callout"><b>Keep the summarized SO, with attachments.</b> Each summarized SO carries the duplicate copies of the DRs, the original ATD forms and the dispatch forms, so Accounting can bill and deduct from one complete set.</div>
+  </section>
+
+  <div class="grid2 wide-pair">
+    <section class="panel">
+      <div class="panel-head"><div><span class="eyebrow">Weekly counter schedule</span><h2>Business units served at MMF MCP</h2><p>Each business unit is assigned fixed days, so the counter can plan staff and stock.</p></div></div>
+      <div class="tbl"><table class="week">
+        <thead><tr><th>Business unit</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>
+        <tbody>
+          <tr><td>MMFI</td><td class="on">●</td><td></td><td></td><td></td><td></td><td class="on">●</td></tr>
+          <tr><td>MMHI</td><td></td><td></td><td></td><td class="on">●</td><td></td><td></td></tr>
+          <tr><td>MMHC</td><td></td><td></td><td></td><td class="on">●</td><td></td><td></td></tr>
+          <tr><td>MGT</td><td></td><td></td><td></td><td class="on">●</td><td></td><td></td></tr>
+          <tr><td>MMDC</td><td></td><td></td><td></td><td class="on">●</td><td></td><td></td></tr>
+          <tr><td>MMEI</td><td></td><td class="on">●</td><td></td><td></td><td class="on">●</td><td></td></tr>
+          <tr class="total"><td>Units per day</td><td>1</td><td>1</td><td>—</td><td>4</td><td>1</td><td>1</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">Wednesday is intended for MMHC pull-out.</p>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><div><span class="eyebrow">Payroll cut-off</span><h2>When each order is deducted</h2><p>Orders are passed from SML to Accounting every day. Accounting bills HR and the other business units twice a month.</p></div></div>
+      <div class="tbl"><table>
+        <thead><tr><th>Pay day</th><th>Order coverage</th><th>SML to Accounting</th><th>Accounting to HR / other units</th><th>List of deducted employees</th></tr></thead>
+        <tbody>
+          <tr><td class="bold">8th</td><td>26th – 10th</td><td>Every day</td><td>12th</td><td>8th</td></tr>
+          <tr><td class="bold">23rd</td><td>11th – 25th</td><td>Every day</td><td>27th</td><td>23rd</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">The list of deducted employees goes from Cash Payroll and the other business units to MMFI Accounts Receivable and SML.</p>
+    </section>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head"><div><span class="eyebrow">Document flow</span><h2>What to submit, when, and to whom</h2></div></div>
+    <div class="tbl"><table class="docs">
+      <thead><tr><th>When</th><th>What to submit</th><th>To</th><th>By</th></tr></thead>
+      <tbody>
+        <tr><td class="bold">Daily</td><td>Transaction of the day: SO with duplicate copies of the DRs, original ATD and dispatch form</td><td>Accounting – Accounts Receivable</td><td>MCP staff</td></tr>
+        <tr><td class="bold">12th and 27th</td><td>Billing statement (SOA) with the sales orders and original ATD attached</td><td>Accounting – Cash and Payroll, and Accounting of the other business units (SML may act as messenger)</td><td>Accounting – Accounts Receivable</td></tr>
+        <tr><td class="bold" rowspan="2">8th and 23rd</td><td rowspan="2">List of successfully deducted employees</td><td>Accounts Receivable</td><td>Accounting – Cash and Payroll, and other business units</td></tr>
+        <tr><td>Sales Meat and Livestock</td><td>Accounts Receivable</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><div><span class="eyebrow">Side by side</span><h2>EFSP vs proposed regular salary deduction</h2></div></div>
+    <div class="tbl"><table class="cmp">
+      <thead><tr><th>Measure</th><th>EFSP</th><th>Proposed regular salary deduct</th></tr></thead>
+      <tbody>
+        <tr><td>Order to release</td><td>Up to 13 days (10 days processing + 3-day releasing)</td><td class="good">Same visit</td></tr>
+        <tr><td>When employees can order</td><td>During the 3-day gathering window of each round</td><td class="good">On their business unit's set days, every week</td></tr>
+        <tr><td>Eligibility check</td><td>Through HR consolidation</td><td>At the counter, against HR's updated list per cut-off</td></tr>
+        <tr><td>Unavailable items</td><td>Found during order preparation, after orders are gathered</td><td class="good">Employee is told at the counter and can change or cancel right away</td></tr>
+        <tr><td>ATD form</td><td>Printed and checked after orders are prepared (days 8–10)</td><td class="good">Filled in and signed by the employee at the counter</td></tr>
+        <tr><td>Billing and deduction</td><td>Through HR documents per round</td><td>Summarized SO with attachments, billed on the 12th and 27th</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+</div>
+
+<script>
+const M=[["MAY 2023",0,0,0,0,0,0],["JUN 2023",0,0,0,0,0,0],["JUL 2023",0,0,0,0,0,0],["AUG 2023",0,0,0,0,0,0],["SEP 2023",520.57,78389.78,13.33,3065.9,0,0],["OCT 2023",454.52,41333.4,76.095,10562.7,0,0],["NOV 2023",170.705,30424.6,119.11,19057.6,0,0],["DEC 2023",783.16,94810.59,8.2692,1240.38,0,0],
+["JAN 2024",1845.75,240487.32,25.01,3875.78,0,0],["FEB 2024",275.74,21820.28,0,0,0,0],["MAR 2024",555.19,90088.78,0,0,0,0],["APR 2024",830.69,86992.27,1.58,158,0,0],["MAY 2024",2111.12,267198.76,0,0,0,0],["JUN 2024",2523.54,356101.65,50.4,4788,0,0],["JUL 2024",2029.78,344576.4,0,0,0,0],["AUG 2024",2383.88,427954.39,0,0,0,0],["SEP 2024",5082.01,511920.99,29.74,2825.3,0,0],["OCT 2024",4501.71,541983.52,396,51384.7,0,0],["NOV 2024",3171.06,588817.28,272.19,41674.6,0,0],["DEC 2024",3533.46,857863.9,1.38,358.8,0,0],
+["JAN 2025",2864.88,602812.22,272.34,51074.25,0,0],["FEB 2025",2764.9,642445.67,63.18,13732.1,0,0],["MAR 2025",3585.85,878583.98,92.26,9907.2,0,0],["APR 2025",3069.71,722163.38,9.64,674.8,0,0],["MAY 2025",2955.285,729909.88,19.94,2392.8,0,0],["JUN 2025",2580.96,641672.8,16.48,1977.6,0,0],["JUL 2025",2207.41,511012.37,18.92,2270,0,0],["AUG 2025",2453.048,604597.67,23.98,3205.7,0,0],["SEP 2025",2199.546,527393.44,0,0,0,0],["OCT 2025",2450.15,562936.91,7.62,914.4,0,0],["NOV 2025",2558.65,494547.08,43.26,5191.2,0,0],["DEC 2025",2477.39,551744.07,45.92,4637,0,0],
+["JAN 2026",1040.55,204497.3,161.96,18166.93,478.5,77949.82],["FEB 2026",909.72,194174.15,274.46,36352.28,538.41,88101.35],["MAR 2026",1449.42,219829.98,234.95,20430.21,369.54,55599.2],["APR 2026",1103.605,187991.63,278.26,64531.98,380.117,54758.2],["MAY 2026",1046.276,189052.84,272.354,46336.85,221.992,33358.85],["JUN 2026",801.93,110881.23,220.58,19004.85,221.21,22316.8],["JUL 2026",887.32,110827.29,269.66,21140.2,381.2,27548.73],["AUG 2026",1064.19,120655.55,136.9,9899.15,577.02,51190.48],["SEP 2026",875.25,87342.62,171.13,13396.75,121.18,19306.5]];
+const E=[["JAN 2026",0,0,0,0,0,0],["FEB 2026",0,0,0,0,0,0],["MAR 2026",0,0,0,0,0,0],["APR 2026",755.165,137050.45,263.055,60502.65,291.36,41869],["MAY 2026",605.195,127403.8,140.71,32363.3,178.619,26523],["JUN 2026",0,0,0,0,0,0],["JUL 2026",0,0,0,0,0,0],["AUG 2026",70.3,16169,0,0,33.6,5039.25],["SEP 2026",78,17940,0,0,26.63,3994.5]];
+const R=M.slice(-9).map((m,i)=>[m[0],...m.slice(1).map((v,j)=>v-E[i][j+1])]);
+const amt=r=>r[2]+r[4]+r[6], kg=r=>r[1]+r[3]+r[5];
+const sum=(a,f)=>a.reduce((s,r)=>s+f(r),0);
+const peso=v=>"₱"+Math.round(v).toLocaleString("en-US");
+const pesoK=v=>v>=1e6?"₱"+(v/1e6).toFixed(2)+"M":v>=1e3?"₱"+Math.round(v/1e3)+"K":"₱"+Math.round(v);
+const kgf=v=>Math.round(v).toLocaleString("en-US")+" kg";
+const pct=(a,b)=>(100*a/b).toFixed(1)+"%";
+const short=m=>m.slice(0,3).charAt(0)+m.slice(1,3).toLowerCase();
+const M26=M.slice(-9), $=id=>document.getElementById(id);
+const NS="http://www.w3.org/2000/svg";
+function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+function niceMax(v){const p=Math.pow(10,Math.floor(Math.log10(v)));const n=v/p;return (n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10)*p}
+
+// KPIs
+const eA=sum(E,amt), eK=sum(E,kg), tA=sum(M26,amt), tK=sum(M26,kg);
+$("f1").textContent=pct(amt(E[3]),amt(M26[3])); $("f2").textContent=peso(eA);
+
+// tooltip helper
+function tipFor(box){const t=document.createElement("div");t.className="tip";t.hidden=true;box.appendChild(t);return t}
+function place(t,box,x,y){t.hidden=false;const w=box.clientWidth,h=Math.min(t.offsetWidth/2+4,w/2);t.style.left=Math.max(h,Math.min(w-h,x))+"px";t.style.top=Math.max(y,t.offsetHeight+12)+"px"}
+
+// Monthly stacked chart
+let measure="amt";
+function drawMonth(){
+  const box=$("c-month");box.innerHTML="";
+  const W=Math.max(box.clientWidth,320), H=W<560?260:320, L=W<560?46:60, Rt=8, T=24, B=30;
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Stacked bars of EFSP and regular salary deduction by month, 2026"},box);
+  const f=measure==="amt"?amt:kg;
+  const max=niceMax(Math.max(...M26.map(f)));
+  const y=v=>T+(H-T-B)*(1-v/max), bw=(W-L-Rt)/9;
+  for(let i=0;i<=4;i++){const v=max*i/4;el("line",{x1:L,x2:W-Rt,y1:y(v),y2:y(v),class:i?"gl":"ax"},svg);const tx=el("text",{x:L-8,y:y(v)+4,"text-anchor":"end"},svg);tx.textContent=measure==="amt"?pesoK(v):Math.round(v).toLocaleString()}
+  const tip=tipFor(box);
+  M26.forEach((m,i)=>{
+    const e=f(E[i]), r=f(R[i]), x=L+i*bw+bw*.18, w=bw*.64;
+    const g=el("g",{},svg);
+    if(r>0){const h=y(0)-y(r);el("path",{d:rr(x,y(r),w,h,e>0?0:4),fill:"var(--reg)"},g)}
+    if(e>0){const top=y(r+e),h=y(r)-top-2;el("path",{d:rr(x,top,w,Math.max(h,1),4),fill:"var(--efsp)"},g)}
+    if(e>0){const t=el("text",{x:x+w/2,y:y(r+e)-7,"text-anchor":"middle",class:"lbl"},g);t.textContent=pct(e,e+r)}
+    const lx=el("text",{x:L+i*bw+bw/2,y:H-10,"text-anchor":"middle"},svg);lx.textContent=short(m[0]);
+    const hit=el("rect",{x:L+i*bw,y:T,width:bw,height:H-T-B,fill:"transparent"},svg);
+    const show=()=>{const fm=measure==="amt"?peso:kgf;tip.innerHTML=`<b>${m[0]}</b><div class="row"><i><span class="sw" style="background:var(--efsp)"></span>EFSP</i><span>${fm(e)}</span></div><div class="row"><i><span class="sw" style="background:var(--reg)"></span>Regular</i><span>${fm(r)}</span></div><div class="row"><i>Total</i><span>${fm(e+r)}</span></div>${e?`<div class="row"><i>EFSP share</i><span>${pct(e,e+r)}</span></div>`:""}`;place(tip,box,(L+i*bw+bw/2)/W*box.clientWidth,y(e+r)/H*box.clientHeight)};
+    hit.addEventListener("mouseenter",show);hit.addEventListener("touchstart",show,{passive:true});hit.addEventListener("mouseleave",()=>tip.hidden=true);
+  });
+}
+function rr(x,y,w,h,r){r=Math.min(r,h,w/2);return `M${x},${y+h}V${y+r}Q${x},${y} ${x+r},${y}H${x+w-r}Q${x+w},${y} ${x+w},${y+r}V${y+h}Z`}
+["amt","kg"].forEach(k=>$("m-"+k).addEventListener("click",()=>{measure=k;$("m-amt").setAttribute("aria-pressed",k==="amt");$("m-kg").setAttribute("aria-pressed",k==="kg");drawMonth()}));
+
+// Mix
+const C=[["Pork",1,2,"--pork"],["Beef",3,4,"--beef"],["Chicken",5,6,"--chicken"]];
+$("mix").innerHTML=C.map(([n,ki,ai,c])=>{const a=sum(E,r=>r[ai]);return `<div class="mix-row"><span class="name">${n}</span><div class="track"><div class="fill" style="width:${100*a/eA}%;background:var(${c})"></div></div><span class="val">${pct(a,eA)} · ${pesoK(a)}</span></div>`}).join("");
+$("mix-t").innerHTML=C.map(([n,ki,ai])=>{const a=sum(E,r=>r[ai]),t=sum(M26,r=>r[ai]);return `<tr><td>${n}</td><td>${kgf(sum(E,r=>r[ki]))}</td><td>${peso(a)}</td><td>${pct(a,t)}</td></tr>`}).join("")+`<tr class="total"><td>Total</td><td>${kgf(eK)}</td><td>${peso(eA)}</td><td>${pct(eA,tA)}</td></tr>`;
+
+// Price table
+
+// Long chart (stacked area by commodity)
+const efspMonths=new Set(["APR 2026","MAY 2026","JUN 2026","JUL 2026","AUG 2026","SEP 2026"]);
+function monoPath(pts){const n=pts.length;if(n<2)return "";const dx=[],dy=[],m=[],t=[];
+  for(let i=0;i<n-1;i++){dx[i]=pts[i+1][0]-pts[i][0];dy[i]=pts[i+1][1]-pts[i][1];m[i]=dy[i]/dx[i]}
+  t[0]=m[0];t[n-1]=m[n-2];for(let i=1;i<n-1;i++)t[i]=m[i-1]*m[i]<=0?0:(m[i-1]+m[i])/2;
+  for(let i=0;i<n-1;i++){if(m[i]===0){t[i]=t[i+1]=0;continue}const a=t[i]/m[i],b=t[i+1]/m[i],h=a*a+b*b;if(h>9){const k=3/Math.sqrt(h);t[i]=k*a*m[i];t[i+1]=k*b*m[i]}}
+  let d=`M${pts[0][0]},${pts[0][1]}`;for(let i=0;i<n-1;i++){const h=dx[i]/3;d+=`C${pts[i][0]+h},${pts[i][1]+t[i]*h} ${pts[i+1][0]-h},${pts[i+1][1]-t[i+1]*h} ${pts[i+1][0]},${pts[i+1][1]}`}return d}
+let lmeasure="amt";
+function drawLong(){
+  const box=$("c-long");box.innerHTML="";
+  const W=Math.max(box.clientWidth,320),narrow=W<560,H=narrow?260:320,L=narrow?50:66,Rt=narrow?18:30,T=14,B=34,n=M.length;
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Line chart of monthly salary deduct sales by commodity, May 2023 to Sep 2026"},box);
+  const S=lmeasure==="amt"?[[2,"--pork","Pork"],[4,"--beef","Beef"],[6,"--chicken","Chicken"]]:[[1,"--pork","Pork"],[3,"--beef","Beef"],[5,"--chicken","Chicken"]];
+  const fm=lmeasure==="amt"?peso:kgf;
+  const max=niceMax(Math.max(...M.flatMap(r=>S.map(s=>r[s[0]]))));
+  const x=i=>L+(W-L-Rt)*i/(n-1), y=v=>T+(H-T-B)*(1-v/max);
+  const defs=el("defs",{},svg);
+  S.forEach(([k,c])=>{const g=el("linearGradient",{id:"lg"+k,x1:0,x2:0,y1:0,y2:1},defs);el("stop",{offset:"0%",style:`stop-color:var(${c});stop-opacity:.28`},g);el("stop",{offset:"100%",style:`stop-color:var(${c});stop-opacity:0`},g)});
+  const cw=(W-L-Rt)/(n-1);
+  M.forEach((m,i)=>{if(efspMonths.has(m[0]))el("rect",{x:Math.max(L,x(i)-cw/2),y:T,width:cw,height:H-T-B,fill:"var(--efsp-soft)"},svg)});
+  for(let i=0;i<=4;i++){const v=max*i/4;el("line",{x1:L,x2:W-Rt,y1:y(v),y2:y(v),stroke:i?"var(--grid)":"var(--ink-3)","stroke-dasharray":i?"4 4":"0","stroke-width":1},svg);const t=el("text",{x:L-8,y:y(v)+4,"text-anchor":"end"},svg);t.textContent=lmeasure==="amt"?pesoK(v):Math.round(v).toLocaleString()}
+  el("line",{x1:L,x2:L,y1:T,y2:H-B,stroke:"var(--ink-3)","stroke-width":1},svg);
+  const step=narrow?6:3;
+  M.forEach((m,i)=>{if(i%step)return;el("line",{x1:x(i),x2:x(i),y1:T,y2:H-B,stroke:"var(--grid)","stroke-dasharray":"4 4"},svg);el("line",{x1:x(i),x2:x(i),y1:H-B,y2:H-B+4,stroke:"var(--ink-3)"},svg);
+    const t=el("text",{x:x(i),y:H-B+17,"text-anchor":"middle"},svg);t.textContent=m[0].slice(0,3)+" "+(narrow?"'"+m[0].slice(-2):m[0].slice(-4))});
+  S.forEach(([k,c])=>{const pts=M.map((r,i)=>[x(i),y(r[k])]);const d=monoPath(pts);
+    el("path",{d:d+`L${x(n-1)},${y(0)}L${x(0)},${y(0)}Z`,fill:`url(#lg${k})`},svg);
+    el("path",{d,fill:"none",stroke:`var(${c})`,"stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"},svg)});
+  const tip=tipFor(box),guide=el("line",{y1:T,y2:H-B,stroke:"var(--ink-3)","stroke-width":1,visibility:"hidden"},svg);
+  const dots=S.map(([k,c])=>el("circle",{r:4.5,fill:`var(${c})`,stroke:"var(--surface)","stroke-width":2,visibility:"hidden"},svg));
+  const ov=el("rect",{x:L,y:T,width:W-L-Rt,height:H-T-B,fill:"transparent"},svg);
+  const mv=ev=>{const rc=svg.getBoundingClientRect(),cx=(ev.touches?ev.touches[0].clientX:ev.clientX)-rc.left,sx=cx*W/rc.width,i=Math.max(0,Math.min(n-1,Math.round((sx-L)/(W-L-Rt)*(n-1)))),m=M[i];
+    guide.setAttribute("x1",x(i));guide.setAttribute("x2",x(i));guide.setAttribute("visibility","visible");
+    S.forEach(([k],j)=>{dots[j].setAttribute("cx",x(i));dots[j].setAttribute("cy",y(m[k]));dots[j].setAttribute("visibility","visible")});
+    const top=Math.max(...S.map(([k])=>m[k]));
+    const ei=i-(n-9), efr=ei>=0&&efspMonths.has(m[0])?E[ei]:null;
+    if(efr){const tot=lmeasure==="amt"?amt(m):kg(m), et=lmeasure==="amt"?amt(efr):kg(efr);
+      tip.innerHTML=`<b>${m[0]}</b> <span class="pill on">EFSP period</span><div class="tip-note">Regular salary deduct and EFSP combined</div><table class="tip-t"><thead><tr><th></th><th>Regular</th><th>EFSP</th><th>Total</th></tr></thead><tbody>`+S.map(([k,c,nm])=>`<tr><td><span class="sw" style="background:var(${c})"></span>${nm}</td><td>${fm(m[k]-efr[k])}</td><td class="e">${efr[k]?fm(efr[k]):"—"}</td><td>${fm(m[k])}</td></tr>`).join("")+`<tr class="tt"><td>Total</td><td>${fm(tot-et)}</td><td class="e">${et?fm(et):"—"}</td><td>${fm(tot)}</td></tr></tbody></table>`;
+    } else tip.innerHTML=`<b>${m[0]}</b> <span class="pill off">Regular salary deduct</span>`+S.map(([k,c,nm])=>`<div class="row"><i><span class="sw" style="background:var(${c})"></span>${nm}</i><span>${fm(m[k])}</span></div>`).join("")+`<div class="row"><i>Total</i><span>${fm(lmeasure==="amt"?amt(m):kg(m))}</span></div>`;
+    place(tip,box,x(i)/W*rc.width,y(top)/H*rc.height)};
+  ov.addEventListener("mousemove",mv);ov.addEventListener("touchmove",mv,{passive:true});ov.addEventListener("touchstart",mv,{passive:true});
+  ov.addEventListener("mouseleave",()=>{tip.hidden=true;guide.setAttribute("visibility","hidden");dots.forEach(d=>d.setAttribute("visibility","hidden"))});
+}
+["amt","kg"].forEach(k=>$("l-"+k).addEventListener("click",()=>{lmeasure=k;$("l-amt").setAttribute("aria-pressed",k==="amt");$("l-kg").setAttribute("aria-pressed",k==="kg");drawLong()}));
+$("yrs").innerHTML=["2023","2024","2025","2026"].map(y=>{const l=M.filter(m=>m[0].endsWith(y));return `<div class="yr"><span class="y">${y} · ${l.filter(r=>amt(r)>0).length} selling months</span><span class="a">${pesoK(sum(l,amt))}</span><span class="k">${kgf(sum(l,kg))}</span></div>`}).join("")+`<div class="yr"><span class="y">All periods</span><span class="a">${pesoK(sum(M,amt))}</span><span class="k">${kgf(sum(M,kg))}</span></div>`;
+
+// YoY
+const Y25=M.filter(m=>m[0].endsWith("2025")).slice(0,9);
+const yrow=(n,f25k,f26k,f25,f26)=>{const ch=f25?((f26-f25)/f25*100):null;return `<tr><td>${n}</td><td>${kgf(f25k)}</td><td>${kgf(f26k)}</td><td>${peso(f25)}</td><td>${peso(f26)}</td><td class="${ch==null?"up":ch>=0?"up":"down"}">${ch==null?"New in 2026":(ch>=0?"▲ +":"▼ ")+ch.toFixed(0)+"%"}</td></tr>`};
+$("yoy-t").innerHTML=C.map(([n,ki,ai])=>yrow(n,sum(Y25,r=>r[ki]),sum(M26,r=>r[ki]),sum(Y25,r=>r[ai]),sum(M26,r=>r[ai]))).join("")+yrow("Total",sum(Y25,kg),tK,sum(Y25,amt),tA).replace("<tr>",'<tr class="total">');
+
+// Ledger
+$("ledger").innerHTML=M26.map((m,i)=>{const e=amt(E[i]);return `<tr><td>${m[0]}</td><td><span class="pill ${efspMonths.has(m[0])?"on":"off"}">${efspMonths.has(m[0])?(e?"EFSP period":"EFSP · no purchases"):"Regular only"}</span></td><td>${peso(amt(m))}</td><td class="${e?"e":""}">${e?peso(e):"—"}</td><td>${peso(amt(R[i]))}</td><td>${e?pct(e,amt(m)):"—"}</td><td>${kgf(kg(m))}</td><td>${e?kgf(kg(E[i])):"—"}</td></tr>`}).join("")+`<tr class="total"><td>Jan–Sep 2026</td><td></td><td>${peso(tA)}</td><td class="e">${peso(eA)}</td><td>${peso(tA-eA)}</td><td>${pct(eA,tA)}</td><td>${kgf(tK)}</td><td>${kgf(eK)}</td></tr>`;
+
+// ---- All years ----
+const YEARS=["2023","2024","2025","2026"];
+const yrRows=y=>M.filter(m=>m[0].endsWith(y));
+const yAgg=y=>{const l=yrRows(y);return{l,pk:sum(l,r=>r[1]),pa:sum(l,r=>r[2]),bk:sum(l,r=>r[3]),ba:sum(l,r=>r[4]),ck:sum(l,r=>r[5]),ca:sum(l,r=>r[6]),a:sum(l,amt),k:sum(l,kg),n:l.filter(r=>amt(r)>0).length}};
+const YA=Object.fromEntries(YEARS.map(y=>[y,yAgg(y)]));
+const chg=(a,b)=>{if(!b)return '<span class="up">New</span>';const c=(a-b)/b*100;return `<span class="${c>=0?"up":"down"}">${c>=0?"▲ +":"▼ "}${Math.abs(c)>=1000?Math.round(c).toLocaleString():c.toFixed(1)}%</span>`};
+let ymeasure="amt", ysplit="ch";
+YA["2026"].ea=eA;YA["2026"].ek=eK;YEARS.forEach(y=>{const a=YA[y];a.ea=a.ea||0;a.ek=a.ek||0;a.ra=a.a-a.ea;a.rk=a.k-a.ek});
+function drawYears(){
+  $("years-legend").innerHTML=ysplit==="ch"?'<span><i class="sw" style="background:var(--reg)"></i>Regular salary deduct</span><span><i class="sw" style="background:var(--efsp)"></i>EFSP</span>':'<span><i class="sw" style="background:var(--pork)"></i>Pork</span><span><i class="sw" style="background:var(--beef)"></i>Beef</span><span><i class="sw" style="background:var(--chicken)"></i>Chicken</span>';
+  const box=$("c-years");box.innerHTML="";
+  const W=Math.max(box.clientWidth,320),H=W<560?190:210,L=W<560?50:64,Rt=8,T=22,B=26;
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Stacked bars of annual salary deduct sales by commodity, 2023 to 2026"},box);
+  const keys=ysplit==="ch"?(ymeasure==="amt"?[["ra","--reg","Regular"],["ea","--efsp","EFSP"]]:[["rk","--reg","Regular"],["ek","--efsp","EFSP"]]):(ymeasure==="amt"?[["pa","--pork","Pork"],["ba","--beef","Beef"],["ca","--chicken","Chicken"]]:[["pk","--pork","Pork"],["bk","--beef","Beef"],["ck","--chicken","Chicken"]]);
+  const tot=y=>ymeasure==="amt"?YA[y].a:YA[y].k, fm=ymeasure==="amt"?pesoK:kgf, fmFull=ymeasure==="amt"?peso:kgf;
+  const max=niceMax(Math.max(...YEARS.map(tot))),y=v=>T+(H-T-B)*(1-v/max),bw=(W-L-Rt)/4;
+  for(let i=0;i<=4;i++){const v=max*i/4;el("line",{x1:L,x2:W-Rt,y1:y(v),y2:y(v),class:i?"gl":"ax"},svg);const t=el("text",{x:L-8,y:y(v)+4,"text-anchor":"end"},svg);t.textContent=ymeasure==="amt"?pesoK(v):Math.round(v).toLocaleString()}
+  const tip=tipFor(box);
+  YEARS.forEach((yr,i)=>{const x=L+i*bw+bw*.3,w=bw*.4;let base=0;const segs=keys.filter(k=>YA[yr][k[0]]>0);
+    segs.forEach(([k,c],j)=>{const v=YA[yr][k],top=y(base+v),h=y(base)-top-(j?2:0);el("path",{d:rr(x,top,w,Math.max(h,1),j===segs.length-1?4:0),fill:`var(${c})`},svg);base+=v});
+    const t=el("text",{x:x+w/2,y:y(base)-8,"text-anchor":"middle",class:"lbl"},svg);t.textContent=fm(base);
+    const lx=el("text",{x:x+w/2,y:H-10,"text-anchor":"middle"},svg);lx.textContent=yr+(yr==="2023"?" (Sep–Dec)":yr==="2026"?" (Jan–Sep)":"");
+    const hit=el("rect",{x:L+i*bw,y:T,width:bw,height:H-T-B,fill:"transparent"},svg);
+    const show=()=>{tip.innerHTML=`<b>${yr}</b>`+keys.map(([k,c,n])=>`<div class="row"><i><span class="sw" style="background:var(${c})"></span>${n}</i><span>${fmFull(YA[yr][k])}</span></div>`).join("")+`<div class="row"><i>Total</i><span>${fmFull(tot(yr))}</span></div>`;const rc=svg.getBoundingClientRect();place(tip,box,(x+w/2)/W*rc.width,y(tot(yr))/H*rc.height)};
+    hit.addEventListener("mouseenter",show);hit.addEventListener("touchstart",show,{passive:true});hit.addEventListener("mouseleave",()=>tip.hidden=true)});
+}
+[["ch","ys-ch"],["co","ys-co"]].forEach(([k,id])=>$(id).addEventListener("click",()=>{ysplit=k;$("ys-ch").setAttribute("aria-pressed",k==="ch");$("ys-co").setAttribute("aria-pressed",k==="co");drawYears()}));
+["amt","kg"].forEach(k=>$("ya-"+k).addEventListener("click",()=>{ymeasure=k;$("ya-amt").setAttribute("aria-pressed",k==="amt");$("ya-kg").setAttribute("aria-pressed",k==="kg");drawYears()}));
+const pace26=YA["2026"].a/9*12, pace26k=YA["2026"].k/9*12;
+$("year-t").innerHTML=YEARS.map((y,i)=>{const a=YA[y],p=i?YA[YEARS[i-1]]:null;return `<tr><td class="bold">${y}</td><td>${a.n}</td><td>${peso(a.pa)}</td><td>${peso(a.ba)}</td><td>${peso(a.ca)}</td><td class="bold">${peso(a.a)}</td><td>${peso(a.ra)}</td><td class="e">${a.ea?peso(a.ea):"—"}</td><td>${kgf(a.k)}</td><td>${peso(a.a/a.n)}</td><td>₱${(a.a/a.k).toFixed(0)}</td><td>${p?chg(a.a,p.a):"—"}</td></tr>`}).join("")
+ +`<tr class="total"><td>2026 full-year pace</td><td>12 (est.)</td><td colspan="3" style="text-align:left;font-weight:400;color:var(--ink-2)">Nine-month average × 12</td><td>${peso(pace26)}</td><td>—</td><td>—</td><td>${kgf(pace26k)}</td><td>${peso(pace26/12)}</td><td>—</td><td>${chg(pace26,YA["2025"].a)} vs 2025</td></tr>`
+ +`<tr class="total"><td>All years</td><td>${YEARS.reduce((s,y)=>s+YA[y].n,0)}</td><td>${peso(sum(M,r=>r[2]))}</td><td>${peso(sum(M,r=>r[4]))}</td><td>${peso(sum(M,r=>r[6]))}</td><td>${peso(sum(M,amt))}</td><td>${peso(sum(M,amt)-eA)}</td><td class="e">${peso(eA)}</td><td>${kgf(sum(M,kg))}</td><td>—</td><td>₱${(sum(M,amt)/sum(M,kg)).toFixed(0)}</td><td>—</td></tr>`;
+
+// ---- 2025 vs 2026 month by month ----
+const MN=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+const row=(mn,y)=>M.find(m=>m[0]===mn+" "+y);
+let yymeasure="amt";
+function drawYoY(){
+  const box=$("c-yoy");box.innerHTML="";
+  const W=Math.max(box.clientWidth,320),H=W<560?250:300,L=W<560?46:60,Rt=8,T=16,B=30;
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Grouped bars comparing 2025 and 2026 monthly salary deduct sales"},box);
+  const f=yymeasure==="amt"?amt:kg, fm=yymeasure==="amt"?peso:kgf;
+  const max=niceMax(Math.max(...MN.map(mn=>f(row(mn,"2025"))))),y=v=>T+(H-T-B)*(1-v/max),bw=(W-L-Rt)/12;
+  MN.forEach((mn,i)=>{if(efspMonths.has(mn+" 2026"))el("rect",{x:L+i*bw,y:T,width:bw,height:H-T-B,fill:"var(--efsp-soft)"},svg)});
+  for(let i=0;i<=4;i++){const v=max*i/4;el("line",{x1:L,x2:W-Rt,y1:y(v),y2:y(v),class:i?"gl":"ax"},svg);const t=el("text",{x:L-8,y:y(v)+4,"text-anchor":"end"},svg);t.textContent=yymeasure==="amt"?pesoK(v):Math.round(v).toLocaleString()}
+  const tip=tipFor(box);
+  MN.forEach((mn,i)=>{const a=row(mn,"2025"),b=row(mn,"2026"),va=f(a),vb=b&&b[1]!=null?f(b):null;const g=bw*.1,w=(bw-g*2-2)/2,x0=L+i*bw+g;
+    el("path",{d:rr(x0,y(va),w,y(0)-y(va),3),fill:"var(--y25)"},svg);
+    if(vb!=null){const ve=E[i]?f(E[i]):0,vr=vb-ve;el("path",{d:rr(x0+w+2,y(vr),w,y(0)-y(vr),ve>0?0:3),fill:"var(--y26)"},svg);
+      if(ve>0)el("path",{d:rr(x0+w+2,y(vb),w,Math.max(y(vr)-y(vb)-2,1),3),fill:"var(--efsp)"},svg)}
+    const lx=el("text",{x:L+i*bw+bw/2,y:H-10,"text-anchor":"middle"},svg);lx.textContent=W<560?mn[0]:short(mn);
+    const hit=el("rect",{x:L+i*bw,y:T,width:bw,height:H-T-B,fill:"transparent"},svg);
+    const show=()=>{const e=vb!=null?f(E[i]||[0,0,0,0,0,0,0]):0;tip.innerHTML=`<b>${short(mn)}</b>${efspMonths.has(mn+" 2026")?' <span class="pill on">EFSP period</span><div class="tip-note">2026 includes regular salary deduct and EFSP</div>':""}<div class="row"><i><span class="sw" style="background:var(--y25)"></span>2025</i><span>${fm(va)}</span></div>${vb!=null?`<div class="row"><i><span class="sw" style="background:var(--y26)"></span>2026 regular</i><span>${fm(vb-e)}</span></div><div class="row"><i><span class="sw" style="background:var(--efsp)"></span>2026 EFSP</i><span>${fm(e)}</span></div><div class="row"><i>2026 total</i><span>${fm(vb)}</span></div><div class="row"><i>Change vs 2025</i><span>${((vb-va)/va*100).toFixed(1)}%</span></div>`:`<div class="row"><i>2026</i><span>Not yet reported</span></div>`}`;const rc=svg.getBoundingClientRect();place(tip,box,(L+i*bw+bw/2)/W*rc.width,y(Math.max(va,vb||0))/H*rc.height)};
+    hit.addEventListener("mouseenter",show);hit.addEventListener("touchstart",show,{passive:true});hit.addEventListener("mouseleave",()=>tip.hidden=true)});
+}
+["amt","kg"].forEach(k=>$("yy-"+k).addEventListener("click",()=>{yymeasure=k;$("yy-amt").setAttribute("aria-pressed",k==="amt");$("yy-kg").setAttribute("aria-pressed",k==="kg");drawYoY()}));
+const sgn=v=>(v>=0?"+":"−")+Math.abs(Math.round(v)).toLocaleString("en-US");
+
+// ---- Regular vs EFSP ----
+const rA=sum(R,amt), rK=sum(R,kg);
+$("vs-head").innerHTML=`<div class="reg-h"><span class="chan"><i class="sw" style="background:var(--reg)"></i>Regular salary deduct</span><span class="v">${pesoK(rA)}</span><span class="s">${peso(rA)} · ${kgf(rK)}</span><span class="s">${pct(rA,tA)} of 2026 value · 9 of 9 months</span></div>
+<div class="efsp-h"><span class="chan"><i class="sw" style="background:var(--efsp)"></i>Employee Food Support Program</span><span class="v">${pesoK(eA)}</span><span class="s">${peso(eA)} · ${kgf(eK)}</span><span class="s">${pct(eA,tA)} of 2026 value · 6 of 9 months (Apr–Sep)</span></div>`;
+const CH=[["Regular",R],["EFSP",E]];
+$("s100").innerHTML=CH.map(([n,d])=>{const t=sum(d,amt);return `<div class="s100-row"><span class="name">${n}</span><div class="s100">${C.map(([cn,ki,ai,c])=>{const p=100*sum(d,r=>r[ai])/t;return `<span style="width:${p}%;background:var(${c})" title="${cn} ${p.toFixed(1)}%">${p>=9?p.toFixed(0)+"%":""}</span>`}).join("")}</div></div>`}).join("");
+const pmax=Math.max(...C.map(([n,ki,ai])=>Math.max(sum(R,r=>r[ai]),sum(E,r=>r[ai]))));
+$("pair").innerHTML=C.map(([n,ki,ai])=>{const r=sum(R,x=>x[ai]),e=sum(E,x=>x[ai]);return `<div class="pair-row"><div class="top"><b>${n}</b><span>Reg ${pesoK(r)} · EFSP ${pesoK(e)}</span></div><div class="bar2"><div style="width:${100*r/pmax}%;background:var(--reg)"></div><div style="width:${Math.max(100*e/pmax,.5)}%;background:var(--efsp)"></div></div></div>`}).join("");
+const PM=[3,4,5,6,7,8], rPM=sum(PM.map(i=>R[i]),amt), ePM=sum(PM.map(i=>E[i]),amt), rPMk=sum(PM.map(i=>R[i]),kg), ePMk=sum(PM.map(i=>E[i]),kg);
+const ppk=(d,ki,ai)=>{const k=sum(d,r=>r[ki]);return k?sum(d,r=>r[ai])/k:null};
+const vsRows=[
+ ["Sales value",peso(rA),peso(eA),"₱"+sgn(eA-rA)],
+ ["Volume",kgf(rK),kgf(eK),sgn(eK-rK)+" kg"],
+ ["Share of 2026 value",pct(rA,tA),pct(eA,tA),""],
+ ["Share of 2026 kilos",pct(rK,tK),pct(eK,tK),""],
+ ["Months open",9,"6 (Apr–Sep)",""],["Months with purchases",9,4,""],
+ ["Avg sales per month open",peso(rA/9),peso(eA/6),"₱"+sgn(eA/6-rA/9)],
+ ["Avg kg per month open",kgf(rK/9),kgf(eK/6),sgn(eK/6-rK/9)+" kg"],
+ ...C.map(([n,ki,ai])=>{const a=sum(R,r=>r[ai])/rA*100,b=sum(E,r=>r[ai])/eA*100;return [n+" share of channel value",a.toFixed(1)+"%",b.toFixed(1)+"%",sgn(b-a)+" pts"]}),
+ ["Program period (Apr–Sep): sales value",peso(rPM),peso(ePM),"EFSP "+pct(ePM,rPM+ePM)+" of total"],
+ ["Program period (Apr–Sep): volume",kgf(rPMk),kgf(ePMk),"EFSP "+pct(ePMk,rPMk+ePMk)+" of total"]];
+$("vs-t").innerHTML=vsRows.map(([m,a,b,d])=>`<tr><td>${m}</td><td>${a}</td><td class="e">${b}</td><td>${d||"—"}</td></tr>`).join("");
+
+drawYears();drawYoY();
+drawMonth();drawLong();
+let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{drawMonth();drawLong();drawYears();drawYoY()},150)});
+</script>
+
+</body></html>
